@@ -21,22 +21,12 @@ const FullScreenContainer = styled.div`
 `;
 
 const ContentArea = styled.main`
-  flex: 1;
   min-width: 0;
-  height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
+  height: 100vh;
+  overflow: hidden;
+  width: 100%;
   position: relative;
-  padding: 16px 20px 100px;
   -webkit-overflow-scrolling: touch;
-
-  @media (min-width: 901px) {
-    padding: 24px 28px 32px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 12px 14px 100px;
-  }
 `;
 
 const MobileHeader = styled.header`
@@ -167,15 +157,15 @@ export function Layout({
         <Outlet />
       </ContentArea>
       <BottomTabBar aria-label="Mobile navigation">
-        <StyledBottomTabLink to="/" end>
+        <StyledBottomTabLink to="/app" end>
           <CalendarCheck size={18} aria-hidden />
           <span>Today</span>
         </StyledBottomTabLink>
-        <StyledBottomTabLink to="/habits">
+        <StyledBottomTabLink to="/app/habits">
           <LayoutGrid size={18} aria-hidden />
           <span>Habits</span>
         </StyledBottomTabLink>
-        <StyledBottomTabLink to="/analytics">
+        <StyledBottomTabLink to="/app/analytics">
           <BarChart2 size={18} aria-hidden />
           <span>Analytics</span>
         </StyledBottomTabLink>

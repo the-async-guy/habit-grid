@@ -102,7 +102,7 @@ export function Sidebar({
 }: SidebarProps) {
   return (
     <SidebarContainer isOpen={isOpen} style={{ display: "flex" }}>
-      <BrandRow>
+      <BrandRow className="gap-2">
         <Brand>
           <BrandMark aria-hidden="true" />
           <BrandText>
@@ -127,7 +127,7 @@ export function Sidebar({
       </BrandRow>
       <NavSection aria-label="Primary navigation">
         <NavLabel>Today</NavLabel>
-        <StyledNavLink to="/" onClick={() => onClose?.()}>
+        <StyledNavLink to="/app" end onClick={() => onClose?.()}>
           <NavItemLeft>
             <CalendarCheck size={16} />
             <span>Today</span>
@@ -139,13 +139,13 @@ export function Sidebar({
       </NavSection>
       <NavSection aria-label="Analytics and management">
         <NavLabel>Insights & Manage</NavLabel>
-        <StyledNavLink to="/habits" onClick={() => onClose?.()}>
+        <StyledNavLink to="/app/habits" onClick={() => onClose?.()}>
           <NavItemLeft>
             <LayoutGrid size={16} />
             <span>Habits Grid</span>
           </NavItemLeft>
         </StyledNavLink>
-        <StyledNavLink to="/analytics" onClick={() => onClose?.()}>
+        <StyledNavLink to="/app/analytics" onClick={() => onClose?.()}>
           <NavItemLeft>
             <BarChart2 size={16} />
             <span>Analytics</span>

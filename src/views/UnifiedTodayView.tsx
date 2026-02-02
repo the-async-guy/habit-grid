@@ -6,25 +6,27 @@ import {
   Card,
   CardHeader,
   CardMeta,
-  CardTitle,
-  CheckCircle,
   QuickHabitList,
   StreakPill,
 } from "../components/ui";
 import { useTheme } from "../contexts/ThemeContext";
 
 const TodayCard = styled(Card)`
-  overflow-y: auto;
-  max-height: calc(100vh - 20px);
   display: flex;
   flex-direction: column;
   border: none;
   background: transparent;
   box-shadow: none;
-  padding: 20px 8px;
 
-  @media (min-width: 601px) {
-    padding: 32px 10px;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding: 20px 28px;
+  padding-bottom: 150px;
+
+  @media (min-width: 900px) {
+    padding: 24px 28px;
   }
 `;
 
@@ -141,14 +143,6 @@ const CheckedPointer = ({
   );
 };
 
-const CustomCheckCircle = styled(CheckCircle)<{ customColor?: string }>`
-  border-color: ${({ checked, customColor, theme }) =>
-    checked ? customColor || theme.success : theme.borderSubtle};
-  background: ${({ checked, customColor, theme }) =>
-    checked ? customColor || theme.success : "transparent"};
-  color: #fff; /* White checkmark */
-`;
-
 type UnifiedItem =
   | { type: "habit"; data: Habit; sortTime: string }
   | { type: "todo"; data: DailyTodo; sortTime: string };
@@ -212,13 +206,13 @@ export function UnifiedTodayView({
   }, [habits, todaysTodos, todayWeekday]);
 
   return (
-    <TodayCard>
+    <TodayCard className="no-scrollbar">
       <CardHeader style={{ marginBottom: 12 }}>
         <div>
-          <CardTitle style={{ fontSize: "clamp(20px, 5vw, 24px)" }}>
+          <h2 className="text-2xl md:text-3xl font-semibold text-left">
             Today&apos;s Schedule
-          </CardTitle>
-          <CardMeta style={{ fontSize: 14 }}>
+          </h2>
+          <CardMeta className="text-left" style={{ fontSize: 14 }}>
             {items.length} items for today
           </CardMeta>
         </div>
@@ -260,13 +254,6 @@ export function UnifiedTodayView({
                   <StreakPill style={{ fontSize: 11, padding: "2px 8px" }}>
                     {streak}d
                   </StreakPill>
-                  <CustomCheckCircle
-                    checked={checked}
-                    customColor={h.color}
-                    style={{ width: 22, height: 22 }}
-                  >
-                    {checked ? "✓" : ""}
-                  </CustomCheckCircle>
                 </div>
               </ItemRow>
             );
@@ -321,13 +308,6 @@ export function UnifiedTodayView({
                   >
                     <Trash2 size={14} />
                   </button>
-                  <CustomCheckCircle
-                    checked={t.completed}
-                    customColor="#A66CFF"
-                    style={{ width: 22, height: 22 }}
-                  >
-                    {t.completed ? "✓" : ""}
-                  </CustomCheckCircle>
                 </div>
               </ItemRow>
             );

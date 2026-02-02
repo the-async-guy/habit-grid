@@ -414,10 +414,6 @@ export const Tag = styled.span`
   color: ${({ theme }) => theme.textSecondary};
 `;
 
-export const GridWrapper = styled.div`
-  margin-top: 8px;
-`;
-
 export const CalendarRow = styled.div`
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
@@ -437,44 +433,32 @@ export const CalendarGrid = styled.div.withConfig({
   border-radius: 12px;
   background: ${({ themeMode }) =>
     themeMode === "light"
-      ? `linear-gradient(
-          135deg,
-          rgba(59, 130, 246, 0.06),
-          rgba(255, 255, 255, 0.95)
-        )`
-      : `radial-gradient(
-          circle at 0 0,
-          rgba(56, 189, 248, 0.08),
-          rgba(15, 23, 42, 0.9)
-        )`};
+      ? "rgba(59, 130, 246, 0.06)"
+      : "rgba(56, 189, 248, 0.08)"};
   border: 1px solid
     ${({ themeMode }) =>
       themeMode === "light"
-        ? "rgba(148, 163, 184, 0.2)"
+        ? "rgba(59, 130, 246, 0.2)"
         : "rgba(148, 163, 184, 0.3)"};
   width: 100%;
-  aspect-ratio: 7 / 5;
 `;
 
 export const DayCell = styled.div<{
   intensity: number;
   isToday: boolean;
   color: string;
+  themeMode: "light" | "dark";
 }>`
   width: 100%;
   aspect-ratio: 1;
   border-radius: 4px;
   border: none;
-  background: ${({ color, intensity, theme }) => {
-    if (intensity < 0) {
-      return theme.mode === "dark"
-        ? "rgba(255, 255, 255, 0.1)"
-        : "rgba(0, 0, 0, 0.1)";
+  background: ${({ color, intensity, themeMode }) => {
+    if (intensity === 0 || intensity === -1) {
+      return themeMode === "dark" ? "#595959" : "#c9c9c9";
     }
-    if (intensity === 0) {
-      return theme.mode === "dark"
-        ? "rgba(55, 65, 81, 0.6)"
-        : "rgba(229, 231, 235, 0.6)";
+    if (intensity < 0) {
+      return "transparent";
     }
     if (intensity === 2) {
       return color;
@@ -486,8 +470,8 @@ export const DayCell = styled.div<{
   box-shadow: ${({ isToday, intensity, theme }) =>
     isToday && intensity >= 0
       ? theme.mode === "dark"
-        ? "0 0 0 2px #fff, 0 0 0 4px rgba(255, 255, 255, 0.2)"
-        : "0 0 0 2px rgba(0, 0, 0, 0.3), 0 0 0 4px rgba(0, 0, 0, 0.1)"
+        ? "0 0 0 1px rgba(255, 255, 255)"
+        : "0 0 0 1px rgba(0, 0, 0)"
       : "none"};
   transition: opacity 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 `;
@@ -638,14 +622,17 @@ export const HabitCardActions = styled.div`
 `;
 
 export const IconButton = styled.button`
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   border-radius: 999px;
   border: 1px solid rgba(148, 163, 184, 0.5);
   background: transparent;
   color: ${({ theme }) => theme.textSecondary};
   font-size: 11px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const PillInputRow = styled.form`

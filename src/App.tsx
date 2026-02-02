@@ -1,6 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { ThemeProvider } from "styled-components";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import {
   type AppData,
   type DailyTodo,
@@ -10,13 +16,14 @@ import {
 import { darkTheme, lightTheme, GlobalStyle } from "./theme";
 import { AppThemeProvider } from "./contexts/ThemeContext";
 import { Layout } from "./components/Layout";
+import { LandingPage } from "./views/LandingPage";
 import { UnifiedTodayView } from "./views/UnifiedTodayView";
 import { HabitsView } from "./views/HabitsView";
 import { AnalyticsView } from "./views/AnalyticsView";
 import { FloatingActionButton } from "./components/FloatingActionButton";
 import { ItemDialog } from "./components/ItemDialog";
-import { sampleData } from "./data/sampleData";
 import moment from "moment";
+import "./App.css";
 
 const STORAGE_KEY = "habitgrid-data-v2";
 
@@ -44,11 +51,10 @@ const uuid = () => {
 function App() {
   const [data, setData] = useState<AppData>(() => {
     try {
-      // const raw = localStorage.getItem(STORAGE_KEY);
-      const raw = sampleData;
+      const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
-        // const parsed = JSON.parse(raw) as AppData & { user?: unknown };
-        const { user: _removed, ...rest } = raw;
+        const parsed = JSON.parse(raw) as AppData & { user?: unknown };
+        const { user: _removed, ...rest } = parsed;
         void _removed;
         const prefs = rest.preferences || {
           theme: "dark" as const,
@@ -313,77 +319,177 @@ function App() {
       <AppThemeProvider themeMode={themeMode}>
         <GlobalStyle />
         <BrowserRouter>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Layout
-                  themeMode={themeMode}
-                  toggleTheme={toggleTheme}
-                  habitsCount={habits.length}
-                  funFact={funFact}
-                />
-              }
-            >
-              <Route
-                index
-                element={
-                  <UnifiedTodayView
-                    habits={habits}
-                    todaysTodos={todaysTodos}
-                    today={today}
-                    onToggleHabitCompletion={toggleHabitCompletion}
-                    onToggleTodoCompletion={toggleDailyTodo}
-                    onEditTodo={handleEditTodo}
-                    onDeleteTodo={deleteDailyTodo}
-                  />
-                }
-              />
-              <Route
-                path="habits"
-                element={
-                  <HabitsView
-                    habits={habits}
-                    today={today}
-                    onEditHabit={handleEditHabit}
-                    onDeleteHabit={deleteHabit}
-                    habitGridColumns={data.preferences.habitGridColumns ?? 4}
-                    onHabitGridColumnsChange={setHabitGridColumns}
-                  />
-                }
-              />
-              <Route
-                path="analytics"
-                element={<AnalyticsView habits={habits} today={today} />}
-              />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Route>
-          </Routes>
-
-          <FloatingActionButton
-            onAddHabit={() => {
-              setDialogInitialData(null);
-              setDialogInitialType("habit");
-              setIsDialogOpen(true);
-            }}
-            onAddTodo={() => {
-              setDialogInitialData(null);
-              setDialogInitialType("todo");
-              setIsDialogOpen(true);
-            }}
-          />
-
-          <ItemDialog
-            isOpen={isDialogOpen}
-            onClose={() => setIsDialogOpen(false)}
-            onSubmit={handleSaveItem}
-            initialType={dialogInitialType}
-            initialData={dialogInitialData}
+          <AppRoutes
             themeMode={themeMode}
+            toggleTheme={toggleTheme}
+            habits={habits}
+            habitsCount={habits.length}
+            funFact={funFact}
+            today={today}
+            todaysTodos={todaysTodos}
+            habitGridColumns={data.preferences.habitGridColumns ?? 4}
+            setHabitGridColumns={setHabitGridColumns}
+            onToggleHabitCompletion={toggleHabitCompletion}
+            onToggleTodoCompletion={toggleDailyTodo}
+            onEditTodo={handleEditTodo}
+            onDeleteTodo={deleteDailyTodo}
+            onEditHabit={handleEditHabit}
+            onDeleteHabit={deleteHabit}
+            isDialogOpen={isDialogOpen}
+            setIsDialogOpen={setIsDialogOpen}
+            dialogInitialType={dialogInitialType}
+            setDialogInitialType={setDialogInitialType}
+            dialogInitialData={dialogInitialData}
+            setDialogInitialData={setDialogInitialData}
+            onSaveItem={handleSaveItem}
           />
         </BrowserRouter>
       </AppThemeProvider>
     </ThemeProvider>
+  );
+}
+
+function AppRoutes({
+  themeMode,
+  toggleTheme,
+  habits,
+  habitsCount,
+  funFact,
+  today,
+  todaysTodos,
+  habitGridColumns,
+  setHabitGridColumns,
+  onToggleHabitCompletion,
+  onToggleTodoCompletion,
+  onEditTodo,
+  onDeleteTodo,
+  onEditHabit,
+  onDeleteHabit,
+  isDialogOpen,
+  setIsDialogOpen,
+  dialogInitialType,
+  setDialogInitialType,
+  dialogInitialData,
+  setDialogInitialData,
+  onSaveItem,
+}: {
+  themeMode: "light" | "dark";
+  toggleTheme: () => void;
+  habits: Habit[];
+  habitsCount: number;
+  funFact: string;
+  today: string;
+  todaysTodos: DailyTodo[];
+  habitGridColumns: number;
+  setHabitGridColumns: (n: number) => void;
+  onToggleHabitCompletion: (habitId: string, dateISO: string) => void;
+  onToggleTodoCompletion: (id: string) => void;
+  onEditTodo: (todo: DailyTodo) => void;
+  onDeleteTodo: (id: string) => void;
+  onEditHabit: (habit: Habit) => void;
+  onDeleteHabit: (id: string) => void;
+  isDialogOpen: boolean;
+  setIsDialogOpen: (v: boolean) => void;
+  dialogInitialType: "habit" | "todo";
+  setDialogInitialType: (v: "habit" | "todo") => void;
+  dialogInitialData: {
+    id: string;
+    name: string;
+    time?: string;
+    type: "habit" | "todo";
+    color?: string;
+    icon?: string;
+    repeatDays?: import("./types").Weekday[];
+  } | null;
+  setDialogInitialData: (v: typeof dialogInitialData) => void;
+  onSaveItem: (itemData: {
+    name: string;
+    time?: string;
+    type: "habit" | "todo";
+    color?: string;
+    icon?: string;
+    id?: string;
+    repeatDays?: import("./types").Weekday[];
+  }) => void;
+}) {
+  const location = useLocation();
+  const isApp = location.pathname.startsWith("/app");
+
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route
+          path="/app"
+          element={
+            <Layout
+              themeMode={themeMode}
+              toggleTheme={toggleTheme}
+              habitsCount={habitsCount}
+              funFact={funFact}
+            />
+          }
+        >
+          <Route
+            index
+            element={
+              <UnifiedTodayView
+                habits={habits}
+                todaysTodos={todaysTodos}
+                today={today}
+                onToggleHabitCompletion={onToggleHabitCompletion}
+                onToggleTodoCompletion={onToggleTodoCompletion}
+                onEditTodo={onEditTodo}
+                onDeleteTodo={onDeleteTodo}
+              />
+            }
+          />
+          <Route
+            path="habits"
+            element={
+              <HabitsView
+                habits={habits}
+                today={today}
+                onEditHabit={onEditHabit}
+                onDeleteHabit={onDeleteHabit}
+                habitGridColumns={habitGridColumns}
+                onHabitGridColumnsChange={setHabitGridColumns}
+              />
+            }
+          />
+          <Route
+            path="analytics"
+            element={<AnalyticsView habits={habits} today={today} />}
+          />
+          <Route path="*" element={<Navigate to="/app" replace />} />
+        </Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+
+      {isApp && (
+        <FloatingActionButton
+          onAddHabit={() => {
+            setDialogInitialData(null);
+            setDialogInitialType("habit");
+            setIsDialogOpen(true);
+          }}
+          onAddTodo={() => {
+            setDialogInitialData(null);
+            setDialogInitialType("todo");
+            setIsDialogOpen(true);
+          }}
+        />
+      )}
+
+      <ItemDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onSubmit={onSaveItem}
+        initialType={dialogInitialType}
+        initialData={dialogInitialData}
+        themeMode={themeMode}
+      />
+    </>
   );
 }
 

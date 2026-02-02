@@ -14,18 +14,15 @@ import {
 import { TrendingUp, Calendar, Activity } from "lucide-react";
 
 const AnalyticsWrapper = styled.div`
-  padding: 20px 10px 40px;
-  max-height: calc(100vh - 100px);
+  height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+  padding: 20px 28px;
+  padding-bottom: 150px;
 
-  @media (max-width: 480px) {
-    padding: 14px 8px 40px;
-  }
-
-  @media (min-width: 901px) {
-    padding: 32px 10px 40px;
+  @media (min-width: 900px) {
+    padding: 24px 28px;
   }
 `;
 
@@ -136,9 +133,9 @@ export function AnalyticsView({ habits, today }: AnalyticsViewProps) {
     <AnalyticsWrapper>
       <CardHeader>
         <div>
-          <CardTitle style={{ fontSize: "clamp(20px, 5vw, 24px)" }}>
+          <h2 className="text-2xl md:text-3xl font-semibold text-left">
             Insights
-          </CardTitle>
+          </h2>
           <CardMeta>Your progress and consistency at a glance</CardMeta>
         </div>
       </CardHeader>
