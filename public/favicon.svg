@@ -1,0 +1,15 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="habitgrid-logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A84FF" />
+      <stop offset="35%" stop-color="#30D158" />
+      <stop offset="70%" stop-color="#FF9F0A" />
+      <stop offset="100%" stop-color="#FF2D55" />
+    </linearGradient>
+  </defs>
+  <path
+    d="M16 4H44C52.8366 4 60 11.1634 60 20V44C60 52.8366 52.8366 60 44 60H16C9.37258 60 4 54.6274 4 48V20C4 11.1634 11.1634 4 20 4Z"
+    fill="url(#habitgrid-logo-gradient)"
+  />
+</svg>
+
