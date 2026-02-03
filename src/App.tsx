@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { ThemeProvider } from "styled-components";
 import {
-  BrowserRouter,
+  HashRouter,
   Route,
   Routes,
   Navigate,
@@ -41,7 +41,6 @@ const HABIT_COLORS = [
 ];
 
 const todayISO = () => moment().format("YYYY-MM-DD");
-console.log(todayISO());
 
 const uuid = () => {
   if (crypto?.randomUUID) return crypto.randomUUID();
@@ -318,7 +317,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <AppThemeProvider themeMode={themeMode}>
         <GlobalStyle />
-        <BrowserRouter basename="/habit-grid">
+        <HashRouter>
           <AppRoutes
             themeMode={themeMode}
             toggleTheme={toggleTheme}
@@ -343,7 +342,7 @@ function App() {
             setDialogInitialData={setDialogInitialData}
             onSaveItem={handleSaveItem}
           />
-        </BrowserRouter>
+        </HashRouter>
       </AppThemeProvider>
     </ThemeProvider>
   );
