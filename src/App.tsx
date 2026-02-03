@@ -318,7 +318,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <AppThemeProvider themeMode={themeMode}>
         <GlobalStyle />
-        <BrowserRouter>
+        <BrowserRouter basename="/habit-grid">
           <AppRoutes
             themeMode={themeMode}
             toggleTheme={toggleTheme}
