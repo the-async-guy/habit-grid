@@ -138,10 +138,16 @@ function App() {
   );
 
   const today = todayISO();
+  const yesterday = moment().subtract(1, "day").format("YYYY-MM-DD");
 
   const todaysTodos = useMemo(
     () => data.todos.daily.filter((t) => t.date === today),
     [data, today]
+  );
+
+  const yesterdaysTodos = useMemo(
+    () => data.todos.daily.filter((t) => t.date === yesterday),
+    [data, yesterday]
   );
 
   const toggleTheme = () => {
@@ -326,6 +332,8 @@ function App() {
             funFact={funFact}
             today={today}
             todaysTodos={todaysTodos}
+            yesterday={yesterday}
+            yesterdaysTodos={yesterdaysTodos}
             habitGridColumns={data.preferences.habitGridColumns ?? 4}
             setHabitGridColumns={setHabitGridColumns}
             onToggleHabitCompletion={toggleHabitCompletion}
@@ -356,6 +364,8 @@ function AppRoutes({
   funFact,
   today,
   todaysTodos,
+  yesterday,
+  yesterdaysTodos,
   habitGridColumns,
   setHabitGridColumns,
   onToggleHabitCompletion,
@@ -379,6 +389,8 @@ function AppRoutes({
   funFact: string;
   today: string;
   todaysTodos: DailyTodo[];
+  yesterday: string;
+  yesterdaysTodos: DailyTodo[];
   habitGridColumns: number;
   setHabitGridColumns: (n: number) => void;
   onToggleHabitCompletion: (habitId: string, dateISO: string) => void;
@@ -436,6 +448,22 @@ function AppRoutes({
                 habits={habits}
                 todaysTodos={todaysTodos}
                 today={today}
+                viewLabel="Today"
+                onToggleHabitCompletion={onToggleHabitCompletion}
+                onToggleTodoCompletion={onToggleTodoCompletion}
+                onEditTodo={onEditTodo}
+                onDeleteTodo={onDeleteTodo}
+              />
+            }
+          />
+          <Route
+            path="yesterday"
+            element={
+              <UnifiedTodayView
+                habits={habits}
+                todaysTodos={yesterdaysTodos}
+                today={yesterday}
+                viewLabel="Yesterday"
                 onToggleHabitCompletion={onToggleHabitCompletion}
                 onToggleTodoCompletion={onToggleTodoCompletion}
                 onEditTodo={onEditTodo}

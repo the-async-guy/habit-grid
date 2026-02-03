@@ -1,7 +1,13 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import { CalendarCheck, LayoutGrid, BarChart2, Menu } from "lucide-react";
+import {
+  CalendarCheck,
+  CalendarClock,
+  LayoutGrid,
+  BarChart2,
+  Menu,
+} from "lucide-react";
 import { Sidebar } from "./Sidebar";
 import { Outlet } from "react-router-dom";
 import { BottomTabBar, BrandMark, BrandText, BrandTitle } from "./ui";
@@ -160,6 +166,10 @@ export function Layout({
         <StyledBottomTabLink to="/app" end>
           <CalendarCheck size={18} aria-hidden />
           <span>Today</span>
+        </StyledBottomTabLink>
+        <StyledBottomTabLink to="/app/yesterday">
+          <CalendarClock size={18} aria-hidden />
+          <span>Yesterday</span>
         </StyledBottomTabLink>
         <StyledBottomTabLink to="/app/habits">
           <LayoutGrid size={18} aria-hidden />

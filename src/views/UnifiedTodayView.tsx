@@ -151,6 +151,7 @@ interface UnifiedTodayViewProps {
   habits: Habit[];
   todaysTodos: DailyTodo[];
   today: string;
+  viewLabel?: "Today" | "Yesterday";
   onToggleHabitCompletion: (id: string, date: string) => void;
   onToggleTodoCompletion: (id: string) => void;
   onEditTodo: (todo: DailyTodo) => void;
@@ -169,6 +170,7 @@ export function UnifiedTodayView({
   habits,
   todaysTodos,
   today,
+  viewLabel = "Today",
   onToggleHabitCompletion,
   onToggleTodoCompletion,
   onEditTodo,
@@ -210,10 +212,10 @@ export function UnifiedTodayView({
       <CardHeader style={{ marginBottom: 12 }}>
         <div>
           <h2 className="text-2xl md:text-3xl font-semibold text-left">
-            Today&apos;s Schedule
+            {viewLabel}&apos;s Schedule
           </h2>
           <CardMeta className="text-left" style={{ fontSize: 14 }}>
-            {items.length} items for today
+            {items.length} items for {viewLabel.toLowerCase()}
           </CardMeta>
         </div>
       </CardHeader>
@@ -221,7 +223,7 @@ export function UnifiedTodayView({
       <QuickHabitList style={{ gap: 6 }}>
         {items.length === 0 && (
           <CardMeta style={{ padding: 40, textAlign: "center", fontSize: 15 }}>
-            Nothing scheduled for today yet.
+            Nothing scheduled for {viewLabel.toLowerCase()} yet.
             <br />
             Add a habit or task using the + button.
           </CardMeta>

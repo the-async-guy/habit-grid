@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import {
   CalendarCheck,
+  CalendarClock,
   LayoutGrid,
   BarChart2,
   Moon,
@@ -126,7 +127,7 @@ export function Sidebar({
         </div>
       </BrandRow>
       <NavSection aria-label="Primary navigation">
-        <NavLabel>Today</NavLabel>
+        <NavLabel>Schedule</NavLabel>
         <StyledNavLink to="/app" end onClick={() => onClose?.()}>
           <NavItemLeft>
             <CalendarCheck size={16} />
@@ -135,6 +136,12 @@ export function Sidebar({
           <NavItemBadge>
             {habitsCount} habit{habitsCount === 1 ? "" : "s"}
           </NavItemBadge>
+        </StyledNavLink>
+        <StyledNavLink to="/app/yesterday" onClick={() => onClose?.()}>
+          <NavItemLeft>
+            <CalendarClock size={16} />
+            <span>Yesterday</span>
+          </NavItemLeft>
         </StyledNavLink>
       </NavSection>
       <NavSection aria-label="Analytics and management">
